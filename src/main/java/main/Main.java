@@ -33,7 +33,7 @@ public class Main {
 	
 	@AfterSuite
 	public void tearDown() throws IOException {
-		if (driver !=null)
-			driver.quit();
+		//if (driver !=null)
+		//	driver.quit();
 	}
 }

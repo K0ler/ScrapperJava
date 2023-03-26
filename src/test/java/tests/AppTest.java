@@ -3,9 +3,12 @@
  */
 package tests;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
+import page.CarListPage;
+import page.MainComponent;
 import page.WebPageComponent;
 import main.Message;
 import main.Main;
@@ -13,68 +16,25 @@ import main.Main;
 public class AppTest extends Main {
 
 	@Test public void gameSmoke() throws InterruptedException {
-    	
-    	WebPageComponent webpage = new WebPageComponent(driver);
-    	
-    	//1. Załadowanie URL
-    	//main_Page.open_page();
-    	Assert.assertTrue(webpage.open_page(), "Page opened");
-    	webpage.reset_listener();
-    	//2. Czekanie na pojawienie się obiektu Canvas
-    	Assert.assertTrue(webpage.check_canvas(), "Canvas object is displayed");
-    	//3. Oczekiwanie na message `Message.GAME_LOADED`
-    	Assert.assertTrue(webpage.check_message(Message.GAME_LOADED.getMessage(), true), "WGEAPI.notifyGameplayID show in object message");
-    	//4. Pauza 1 sekunda
-    	Thread.sleep(1000);
-    	Assert.assertTrue(true, "1sek wait");
-    	//5. Emulacja kliknięcia spacji
-    	Assert.assertTrue(webpage.press_space(), "Space pressed");
-    	//6. Oczekiwanie na message: `Message.GAME_READY`
-    	Assert.assertTrue(webpage.check_message(Message.GAME_READY.getMessage(), true), "WGEAPI.status.ready show in object message");
-    	//7. Pauza 1 sekunda
-    	Thread.sleep(1000);
-    	Assert.assertTrue(true, "1sek wait");
-    	//8. Emulacja kliknięcia spacji
-    	Assert.assertTrue(webpage.press_space(), "Space pressed");
-    	//9. Oczekiwanie na message: `Message.SPIN_START`
-    	Assert.assertTrue(webpage.check_message(Message.SPIN_START.getMessage(), false), "WGEAPI.spinStarted show in object message");
-    	//10. Oczekiwanie na message: `Message.SPIN_END`
-    	Assert.assertTrue(webpage.check_message(Message.SPIN_END.getMessage(), false), "WGEAPI.spinEnded show in object message");
-    	//11. Koniec testu, wynik pozytywny.
-    	Assert.assertTrue(true, "Test ended");
-    	
-    }
-    
-    @Test public void gameSmoke_passed() throws InterruptedException {
-    	
-    	WebPageComponent webpage = new WebPageComponent(driver);
-    	
-    	//1. Załadowanie URL
-    	//main_Page.open_page();
-    	Assert.assertTrue(webpage.open_page(), "Page opened");
-    	webpage.reset_listener();
-    	//2. Czekanie na pojawienie się obiektu Canvas
-    	Assert.assertTrue(webpage.check_canvas(), "Canvas object is displayed");
-    	//3. Oczekiwanie na message `Message.GAME_LOADED`
-    	//System.out.println(Message.of(Message.GAME_LOADED));
-    	Assert.assertTrue(webpage.check_message(Message.GAME_LOADED.getMessage(), true), "WGEAPI.notifyGameplayID show in object message");
-    	//6. Oczekiwanie na message: `Message.GAME_READY`
-    	Assert.assertTrue(webpage.check_message(Message.GAME_READY.getMessage(), true), "WGEAPI.status.ready show in object message");
-    	//4. Pauza 1 sekunda (zwiększone do 2sek z powodu animacji)
-    	Thread.sleep(2000);
-    	Assert.assertTrue(true, "2sek wait");
-    	//5. Emulacja kliknięcia spacji
-    	Assert.assertTrue(webpage.press_space(), "Space pressed");
-    	//7. Pauza 1 sekunda (zwiększone do 2sek z powodu animacji)
-    	Thread.sleep(2000);
-    	Assert.assertTrue(true, "2sek wait");
-    	//8. Emulacja kliknięcia spacji
-    	Assert.assertTrue(webpage.press_space(), "Space pressed");
-    	//9. Oczekiwanie na message: `Message.SPIN_START`
-    	Assert.assertTrue(webpage.check_message(Message.SPIN_START.getMessage(), false), "WGEAPI.spinStarted show in object message");
-    	//10. Oczekiwanie na message: `Message.SPIN_END`
-    	Assert.assertTrue(webpage.check_message(Message.SPIN_END.getMessage(), false), "WGEAPI.spinEnded show in object message");
-    	//11. Koniec testu, wynik pozytywny.
-    	Assert.assertTrue(true, "Test ended");
-    }
+
+		WebPageComponent webpage = new WebPageComponent(driver);
+		MainComponent mainpage = new MainComponent(driver);
+		CarListPage carListPage = new CarListPage(driver);
+
+		webpage.open_page();
+		Thread.sleep(14000);
+
+		mainpage.acceptCookies();
+		//Step1
+		mainpage.chooseNadwozie("Sedan");
+		mainpage.chooseMarka("Renault");
+		mainpage.chooseModel("Megane");
+		mainpage.chooseGeneracja("IV");
+		mainpage.buttonSubmit2.click();
+		//Step2
+		Thread.sleep(10000);
+		carListPage.scrapePage();
+
+	}
+
 }
