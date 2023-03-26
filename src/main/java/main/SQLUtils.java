@@ -6,7 +6,7 @@ public class SQLUtils {
 
     private Statement stmt;
     private Connection connection;
-    private ResultSet rs;
+    private int rs;
 
     public Connection connectToSQL() throws SQLException {
 
@@ -17,13 +17,12 @@ public class SQLUtils {
         return connection;
     }
 
-    public ResultSet sendToSQL(String query) throws SQLException {
-        rs = stmt.executeQuery(query);
+    public int sendToSQL(String query) throws SQLException {
+        rs = stmt.executeUpdate(query);
         return rs;
     }
 
     public void closeSQL() throws SQLException {
-        rs.close();
         stmt.close();
         connection.close();
     }

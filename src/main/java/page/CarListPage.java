@@ -34,7 +34,7 @@ public class CarListPage {
 
 
         List<WebElement> carlist = listaSamochodów.findElements(By.tagName("article"));
-
+        int i = 1;
         for (WebElement singlecar : carlist) {
             Actions actions = new Actions(driver);
 
@@ -51,8 +51,10 @@ public class CarListPage {
 
             CarPage car = new CarPage(driver);
             auctions.add(Pair.of(car.scrapeCar()));
+            i++;
             driver.close();
             driver.switchTo().window(oldWindowHandle);
+            //if(i == 3) break;
         }
         sendResultToSQL();
         return true;
@@ -65,8 +67,6 @@ public class CarListPage {
         for (Pair<String, String> auction : auctions) {
             sql.sendToSQL("INSERT INTO otomoto (url, title) values ('" + auction.getLeft() + "', '" + auction.getRight() + "')");
         }
-        sql.closeSQL();
-
         return true;
     };
 

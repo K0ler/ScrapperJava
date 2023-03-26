@@ -17,6 +17,8 @@ public class CarPage {
     @FindBy(xpath = "//span[contains(@class, 'offer-title')]")
     public WebElement spanRenaultMeganeIntensEdc;
 
+    @FindBy(xpath = "//span[contains(@class, 'offer-name')]")
+    public WebElement spanRenaultMeganeIntensEdc2;
 
 
     public CarPage(WebDriver driver) {
@@ -30,7 +32,7 @@ public class CarPage {
             return Pair.of(driver.getCurrentUrl(), spanRenaultMeganeIntensEdc.getText());
         }
         catch(Exception e) {
-            return Pair.of(driver.getCurrentUrl(), "error");
+            return Pair.of(driver.getCurrentUrl(), spanRenaultMeganeIntensEdc2.getText());
         }
     };
 
