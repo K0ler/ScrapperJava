@@ -10,6 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Reporter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -46,15 +47,17 @@ public class CarListPage {
             String newWindowHandle = windowHandles.toArray()[windowHandles.size() - 1].toString();
             driver.switchTo().window(newWindowHandle);
 
+            Reporter.log("Iteracja: " + i);
             System.out.println("Aktualny tytuł: " + driver.getTitle());
+            Reporter.log("Aktualny tytuł: " + driver.getTitle());
             System.out.println("Aktualny adres URL: " + driver.getCurrentUrl());
+            Reporter.log("Aktualny adres URL: " + driver.getCurrentUrl());
 
             CarPage car = new CarPage(driver);
             auctions.add(Pair.of(car.scrapeCar()));
             i++;
             driver.close();
             driver.switchTo().window(oldWindowHandle);
-            //if(i == 3) break;
         }
         sendResultToSQL();
         return true;
