@@ -24,6 +24,7 @@ public class Main {
 		WebDriverManager.chromedriver().setup();
 		ChromeOptions options = new ChromeOptions();
 		options.addArguments("--remote-allow-origins=*");
+		//options.addArguments("--headless");
 		driver = new ChromeDriver(options);
 		wait = new WebDriverWait(driver, Duration.ofSeconds(90));
 		wait.pollingEvery(Duration.ofMillis(50));

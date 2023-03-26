@@ -1,5 +1,10 @@
 package main;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.List;
 
 import static main.Main.js;
@@ -34,6 +39,8 @@ public class PUtils{
 		return false;
 
 	}
+
+
 
 	public boolean checkIfPageLoaded() {
 		return js.executeScript("return document.readyState").equals("complete");

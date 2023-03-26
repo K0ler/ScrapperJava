@@ -1,6 +1,7 @@
 package page;
 
 import main.PUtils;
+import main.SQLUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -10,6 +11,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,28 +28,24 @@ public class CarListPage {
     @FindBy(xpath = "//main[@data-testid='search-results']")
     public WebElement listaSamochodów;
 
-    public boolean scrapePage() throws InterruptedException {
+    private List<Pair<String, String>> auctions = new ArrayList<>();
 
-        List<Pair<String, String>> auctions = new ArrayList<>();
+    public boolean scrapePage() throws InterruptedException, SQLException {
+
 
         List<WebElement> carlist = listaSamochodów.findElements(By.tagName("article"));
 
         for (WebElement singlecar : carlist) {
-            // Utworzenie obiektu klasy Actions
             Actions actions = new Actions(driver);
 
-            // Naciśnięcie klawisza Ctrl lub Command i kliknięcie na link
             actions.keyDown(Keys.CONTROL).click(singlecar).perform();
 
-            // Pobranie listy dostępnych okien
             Set<String> windowHandles = driver.getWindowHandles();
 
-            // Przełączenie się na ostatnie okno
             String oldWindowHandle = windowHandles.toArray()[windowHandles.size() - 2].toString();
             String newWindowHandle = windowHandles.toArray()[windowHandles.size() - 1].toString();
             driver.switchTo().window(newWindowHandle);
 
-            // Wyświetlenie aktualnego tytułu i adresu URL
             System.out.println("Aktualny tytuł: " + driver.getTitle());
             System.out.println("Aktualny adres URL: " + driver.getCurrentUrl());
 
@@ -56,7 +54,20 @@ public class CarListPage {
             driver.close();
             driver.switchTo().window(oldWindowHandle);
         }
+        sendResultToSQL();
+        return true;
+    };
+
+    public boolean sendResultToSQL() throws SQLException {
+
+        SQLUtils sql = new SQLUtils();
+        sql.connectToSQL();
+        for (Pair<String, String> auction : auctions) {
+            sql.sendToSQL("INSERT INTO otomoto (url, title) values ('" + auction.getLeft() + "', '" + auction.getRight() + "')");
+        }
+        sql.closeSQL();
 
         return true;
     };
+
 }

@@ -13,9 +13,11 @@ import page.WebPageComponent;
 import main.Message;
 import main.Main;
 
+import java.sql.SQLException;
+
 public class AppTest extends Main {
 
-	@Test public void gameSmoke() throws InterruptedException {
+	@Test public void gameSmoke() throws InterruptedException, SQLException {
 
 		WebPageComponent webpage = new WebPageComponent(driver);
 		MainComponent mainpage = new MainComponent(driver);
