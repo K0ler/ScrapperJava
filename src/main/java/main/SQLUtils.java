@@ -10,7 +10,7 @@ public class SQLUtils {
 
     public Connection connectToSQL() throws SQLException {
 
-        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres");
+        connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "admin");
 
         stmt = connection.createStatement();
 
